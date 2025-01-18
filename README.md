@@ -1,6 +1,6 @@
 # prueba-tecnica-java 
 
-La prueba tecnica fue desarrollada y optimizada para desplegar todos los servicios necesario en contenedores. 
+La prueba tecnica fue desarrollada y optimizada para desplegar todos los servicios necesarios en contenedores. 
 
 ## Levantar los servicios
 Tendremos que estar en la raiz del proyecto. Luego, ejecutaremos el archivo `services.yml` con el siguiente comando:
