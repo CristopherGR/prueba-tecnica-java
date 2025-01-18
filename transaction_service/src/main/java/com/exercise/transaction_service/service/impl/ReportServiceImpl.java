@@ -1,6 +1,7 @@
 package com.exercise.transaction_service.service.impl;
 
 import com.exercise.transaction_service.domain.Transaction;
+import com.exercise.transaction_service.exception.AccountNotFoundException;
 import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.ReportService;
 import com.exercise.transaction_service.service.TransactionService;
@@ -37,7 +38,7 @@ public class ReportServiceImpl implements ReportService {
         log.info("End Date -> {} ", endDate);
 
         List<AccountResponseDTO> accounts = accountService.getAccountsByClientId(clientId);
-        if (accounts.isEmpty()) return new ClientReportDTO(clientId, Collections.emptyList());
+        if (accounts.isEmpty()) throw new AccountNotFoundException("No Accounts found for Client: " + clientId);
 
         List<AccountReportDTO> accountReportDTOList = accounts.stream()
                 .map(account -> {
