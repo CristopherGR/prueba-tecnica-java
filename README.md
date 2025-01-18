@@ -31,7 +31,7 @@ La ubicación del script en cualquiera de los dos microservicios es:
 ## Pruebas mediante Postman
 Una vez se ha levantado correctamente el ambiente por medio del archivo compose `services.yml` y se ha ejecutado el script `BaseDatos.sql` para la creacion de tablas y dependencias (con el gestor o IDE de su preferencia), estará listo para ejecutar las pruebas.
 
-En la raiz del proyecto se encuentra el JSON `test-microservices.yml` que deberá ser importado en la herramienta `POSTMAN`. Este JSON contiene de manera ordenada, todos los endpoints necesarios para probar el funcionamiento de ambos microservicios.
+En la raiz del proyecto se encuentra el JSON `ejercicio-tecnico-java.postman_collection.json` que deberá ser importado en la herramienta `POSTMAN`. Este JSON contiene de manera ordenada, todos los endpoints necesarios para probar el funcionamiento de ambos microservicios.
 
 ---
 
