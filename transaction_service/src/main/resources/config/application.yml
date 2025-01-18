@@ -1,6 +1,6 @@
 spring:
   application:
-    name: client-service
+    name: transaction-service
   profiles:
     active: @spring-profiles@
 
