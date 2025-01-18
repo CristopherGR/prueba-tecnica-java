@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: client-service
+  profiles:
+    active: @spring-profiles@
+
+server:
+  port: 8081
