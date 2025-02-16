@@ -1,7 +1,7 @@
 package com.exercise.client_service.controller;
 
 import com.exercise.client_service.domain.enums.PersonGender;
-import com.exercise.client_service.service.dtos.ClientRequestDTO;
+import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.ClientService;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class ClientControllerIT {
 
     @Test
     public void getAllClientsTest() throws Exception {
-        ClientRequestDTO client1 = new ClientRequestDTO(
+        ClientCreateDTO client1 = new ClientCreateDTO(
                 "Name 1",
                 PersonGender.MALE,
                 20L,
@@ -45,7 +45,7 @@ public class ClientControllerIT {
         );
         ClientResponseDTO firstClientAdded = clientService.createClient(client1);
 
-        ClientRequestDTO client2 = new ClientRequestDTO(
+        ClientCreateDTO client2 = new ClientCreateDTO(
                 "Name 2",
                 PersonGender.FEMALE,
                 20L,

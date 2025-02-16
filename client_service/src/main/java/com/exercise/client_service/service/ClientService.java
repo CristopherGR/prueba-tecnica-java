@@ -1,7 +1,7 @@
 package com.exercise.client_service.service;
 
 import com.exercise.client_service.domain.Client;
-import com.exercise.client_service.service.dtos.ClientRequestDTO;
+import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 
@@ -13,7 +13,7 @@ public interface ClientService {
 
     ClientResponseDTO getByClientId(String clientId);
 
-    ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO);
+    ClientResponseDTO createClient(ClientCreateDTO clientCreateDTO);
 
     ClientResponseDTO updateClient(String clientId, ClientUpdateDTO clientUpdateDTO);
 

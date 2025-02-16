@@ -1,7 +1,7 @@
 package com.exercise.client_service.controller;
 
 import com.exercise.client_service.domain.Client;
-import com.exercise.client_service.service.dtos.ClientRequestDTO;
+import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.ClientService;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
@@ -42,10 +42,10 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientResponseDTO> createClient(@RequestBody ClientRequestDTO clientRequestDTO) {
-        log.info("REST request to create Client: {}", clientRequestDTO);
+    public ResponseEntity<ClientResponseDTO> createClient(@RequestBody @Valid ClientCreateDTO clientCreateDTO) {
+        log.info("REST request to create Client: {}", clientCreateDTO);
 
-        ClientResponseDTO createdClient = clientService.createClient(clientRequestDTO);
+        ClientResponseDTO createdClient = clientService.createClient(clientCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
     }
 

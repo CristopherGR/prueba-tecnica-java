@@ -5,7 +5,7 @@ import com.exercise.client_service.exception.ClientNotFoundException;
 import com.exercise.client_service.producer.ClientProducer;
 import com.exercise.client_service.repository.ClientRepository;
 import com.exercise.client_service.service.ClientService;
-import com.exercise.client_service.service.dtos.ClientRequestDTO;
+import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 import com.exercise.client_service.service.utils.IdGeneratorService;
@@ -53,11 +53,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO) {
+    public ClientResponseDTO createClient(ClientCreateDTO clientCreateDTO) {
         log.info("Entering ClientServiceImpl.createClient()");
-        log.info("ClientRequestDTO -> {}", clientRequestDTO);
+        log.info("ClientRequestDTO -> {}", clientCreateDTO);
 
-        Client client = toClient(clientRequestDTO);
+        Client client = toClient(clientCreateDTO);
         client.setClientId(idGeneratorService.generateUniqueClientId());
         Client savedClient = clientRepository.save(client);
 
@@ -107,16 +107,16 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new ClientNotFoundException("Client with ID " + clientId + " not found"));
     }
 
-    private Client toClient(ClientRequestDTO clientRequestDTO) {
+    private Client toClient(ClientCreateDTO clientCreateDTO) {
         Client client = new Client();
-        client.setName(clientRequestDTO.name());
-        client.setGender(clientRequestDTO.personGender());
-        client.setAge(clientRequestDTO.age());
-        client.setIdentification(clientRequestDTO.identification());
-        client.setAddress(clientRequestDTO.address());
-        client.setPhone(clientRequestDTO.phone());
-        client.setPassword(clientRequestDTO.password());
-        client.setStatus(clientRequestDTO.status());
+        client.setName(clientCreateDTO.name());
+        client.setGender(clientCreateDTO.personGender());
+        client.setAge(clientCreateDTO.age());
+        client.setIdentification(clientCreateDTO.identification());
+        client.setAddress(clientCreateDTO.address());
+        client.setPhone(clientCreateDTO.phone());
+        client.setPassword(clientCreateDTO.password());
+        client.setStatus(clientCreateDTO.status());
 
         return client;
     }
