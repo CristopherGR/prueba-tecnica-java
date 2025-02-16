@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
         log.error(ex.getMessage());
-        return new ResponseEntity<>("UNEXPECTED ERROR: Check the data and try again. If the error persists, contact the administrator. ", HttpStatus.CONFLICT);
+        return new ResponseEntity<>("Error Inesperado: Verifique la data e intente nuevamente. Caso contrario, contacte al administrador.", HttpStatus.CONFLICT);
     }
 
 }
