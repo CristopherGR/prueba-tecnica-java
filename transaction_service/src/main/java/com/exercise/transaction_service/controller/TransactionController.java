@@ -1,8 +1,10 @@
 package com.exercise.transaction_service.controller;
 
 import com.exercise.transaction_service.service.TransactionService;
-import com.exercise.transaction_service.service.dtos.TransactionRequestDTO;
+import com.exercise.transaction_service.service.dtos.TransactionCreateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
+import com.exercise.transaction_service.service.dtos.TransactionUpdateDTO;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,18 +41,18 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionRequestDTO transactionRequestDTO) {
-        log.info("REST request to create transaction: {}", transactionRequestDTO);
+    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody @Valid TransactionCreateDTO transactionCreateDTO) {
+        log.info("REST request to create transaction: {}", transactionCreateDTO);
 
-        TransactionResponseDTO createdTransaction = transactionService.createTransaction(transactionRequestDTO);
+        TransactionResponseDTO createdTransaction = transactionService.createTransaction(transactionCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTransaction);
     }
 
     @PutMapping("/{transactionId}")
-    public ResponseEntity<TransactionResponseDTO> updateTransaction(@PathVariable Long transactionId, @RequestBody TransactionRequestDTO transactionRequestDTO) {
+    public ResponseEntity<TransactionResponseDTO> updateTransaction(@PathVariable Long transactionId, @RequestBody @Valid TransactionUpdateDTO transactionUpdateDTO) {
         log.info("REST request to update transaction by id: {}", transactionId);
 
-        TransactionResponseDTO updatedTransaction = transactionService.updateTransaction(transactionId, transactionRequestDTO);
+        TransactionResponseDTO updatedTransaction = transactionService.updateTransaction(transactionId, transactionUpdateDTO);
         return ResponseEntity.ok(updatedTransaction);
     }
 

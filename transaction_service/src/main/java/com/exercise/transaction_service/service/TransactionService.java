@@ -1,9 +1,9 @@
 package com.exercise.transaction_service.service;
 
 import com.exercise.transaction_service.domain.Transaction;
-import com.exercise.transaction_service.service.dtos.ClientReportDTO;
-import com.exercise.transaction_service.service.dtos.TransactionRequestDTO;
+import com.exercise.transaction_service.service.dtos.TransactionCreateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
+import com.exercise.transaction_service.service.dtos.TransactionUpdateDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,9 +14,9 @@ public interface TransactionService {
 
     TransactionResponseDTO getTransactionById(Long transactionId);
 
-    TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequestDTO);
+    TransactionResponseDTO createTransaction(TransactionCreateDTO transactionCreateDTO);
 
-    TransactionResponseDTO updateTransaction(Long transactionId, TransactionRequestDTO transactionRequestDTO);
+    TransactionResponseDTO updateTransaction(Long transactionId, TransactionUpdateDTO transactionUpdateDTO);
 
     void deleteTransactionById(Long transactionId);
 

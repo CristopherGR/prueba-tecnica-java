@@ -8,10 +8,10 @@ import com.exercise.transaction_service.repository.AccountRepository;
 import com.exercise.transaction_service.repository.TransactionRepository;
 import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.TransactionService;
-import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
-import com.exercise.transaction_service.service.dtos.TransactionRequestDTO;
+import com.exercise.transaction_service.service.dtos.TransactionCreateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
+import com.exercise.transaction_service.service.dtos.TransactionUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -54,17 +54,17 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequestDTO) {
+    public TransactionResponseDTO createTransaction(TransactionCreateDTO transactionCreateDTO) {
         log.info("Entering TransactionServiceImpl.createTransaction()");
-        log.info("TransactionRequestDTO -> {} ", transactionRequestDTO);
+        log.info("TransactionRequestDTO -> {} ", transactionCreateDTO);
 
-        Account associatedAccount = accountService.getAccountByIdOrThrow(transactionRequestDTO.accountId());
+        Account associatedAccount = accountService.getAccountByIdOrThrow(transactionCreateDTO.accountId());
         Double currentBalance = associatedAccount.getInitialBalance();
 
-        Double newBalance = currentBalance + transactionRequestDTO.amount();
+        Double newBalance = currentBalance + transactionCreateDTO.amount();
         if (newBalance < 0) throw new UnavailableBalanceException("Saldo insuficiente para realizar el movimiento");
 
-        Transaction transaction = toTransaction(transactionRequestDTO);
+        Transaction transaction = toTransaction(transactionCreateDTO);
         transaction.setBalance(newBalance);
         Transaction savedTransaction = transactionRepository.save(transaction);
 
@@ -80,15 +80,14 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponseDTO updateTransaction(Long transactionId, TransactionRequestDTO transactionRequestDTO) {
+    public TransactionResponseDTO updateTransaction(Long transactionId, TransactionUpdateDTO transactionUpdateDTO) {
         log.info("Entering TransactionServiceImpl.updateTransaction()");
         log.info("Transaction Id -> {} ", transactionId);
-        log.info("TransactionRequestDTO -> {} ", transactionRequestDTO);
+        log.info("TransactionRequestDTO -> {} ", transactionUpdateDTO);
 
         Transaction transaction = getTransactionByIdOrThrows(transactionId);
-        if (transactionRequestDTO.transactionType() != null) transaction.setTransactionType(transactionRequestDTO.transactionType());
-        if (transactionRequestDTO.amount() != null) transaction.setAmount(transactionRequestDTO.amount());
-        if (transactionRequestDTO.balance() != null) transaction.setBalance(transactionRequestDTO.balance());
+        if (transactionUpdateDTO.transactionType() != null) transaction.setTransactionType(transactionUpdateDTO.transactionType());
+        if (transactionUpdateDTO.amount() != null) transaction.setAmount(transactionUpdateDTO.amount());
 
         Transaction updatedTransaction = transactionRepository.save(transaction);
 
@@ -123,12 +122,12 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findByAccount_AccountIdAndTransactionDateBetween(accountId, startDate, endDate);
     }
 
-    private Transaction toTransaction(TransactionRequestDTO transactionRequestDTO) {
+    private Transaction toTransaction(TransactionCreateDTO transactionCreateDTO) {
         Transaction transaction = new Transaction();
         transaction.setTransactionDate(LocalDateTime.now());
-        transaction.setTransactionType(transactionRequestDTO.transactionType());
-        transaction.setAmount(transactionRequestDTO.amount());
-        transaction.setAccount(accountService.getAccountByIdOrThrow(transactionRequestDTO.accountId()));
+        transaction.setTransactionType(transactionCreateDTO.transactionType());
+        transaction.setAmount(transactionCreateDTO.amount());
+        transaction.setAccount(accountService.getAccountByIdOrThrow(transactionCreateDTO.accountId()));
         return transaction;
     }
 

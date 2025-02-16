@@ -6,7 +6,7 @@ import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.TransactionService;
 import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
-import com.exercise.transaction_service.service.dtos.TransactionRequestDTO;
+import com.exercise.transaction_service.service.dtos.TransactionCreateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,21 +44,19 @@ public class TransactionControllerIT {
         );
         AccountResponseDTO accountResponse = accountService.createAccount(accountRequest);
 
-        TransactionRequestDTO transactionRequestDTO1 = new TransactionRequestDTO(
+        TransactionCreateDTO transactionCreateDTO1 = new TransactionCreateDTO(
                 TransactionType.CREDITO,
                 100.0,
-                200.0,
                 accountResponse.accountId()
         );
-        TransactionResponseDTO transactionResponseDTO1 = transactionService.createTransaction(transactionRequestDTO1);
+        TransactionResponseDTO transactionResponseDTO1 = transactionService.createTransaction(transactionCreateDTO1);
 
-        TransactionRequestDTO transactionRequestDTO2 = new TransactionRequestDTO(
+        TransactionCreateDTO transactionCreateDTO2 = new TransactionCreateDTO(
                 TransactionType.DEBITO,
                 -50.0,
-                150.0,
                 accountResponse.accountId()
         );
-        TransactionResponseDTO transactionResponseDTO2 = transactionService.createTransaction(transactionRequestDTO2);
+        TransactionResponseDTO transactionResponseDTO2 = transactionService.createTransaction(transactionCreateDTO2);
 
         mockMvc.perform(get("/transaction"))
                 .andExpect(status().isOk())

@@ -1,6 +1,5 @@
 package com.exercise.transaction_service.service.dtos;
 
-import com.exercise.transaction_service.domain.enums.AccountType;
 import com.exercise.transaction_service.enums.TransactionType;
 
 import java.time.LocalDateTime;
@@ -12,5 +11,6 @@ public record TransactionResponseDTO(
         Double amount,
         Double balance,
         Long accountId
-) {}
+) {
+}
 

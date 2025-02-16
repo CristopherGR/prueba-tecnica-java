@@ -1,11 +1,10 @@
 package com.exercise.transaction_service.service.dtos;
 
 import com.exercise.transaction_service.enums.TransactionType;
+import jakarta.validation.constraints.Min;
 
-public record TransactionRequestDTO(
+public record TransactionUpdateDTO(
         TransactionType transactionType,
-        Double amount,
-        Double balance,
-        Long accountId
+        Double amount
 ) {
 }
