@@ -4,8 +4,9 @@ import com.exercise.transaction_service.domain.Account;
 import com.exercise.transaction_service.exception.AccountNotFoundException;
 import com.exercise.transaction_service.repository.AccountRepository;
 import com.exercise.transaction_service.service.AccountService;
-import com.exercise.transaction_service.service.dtos.AccountRequestDTO;
+import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
+import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 import com.exercise.transaction_service.service.utils.IdGeneratorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,26 +48,26 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponseDTO createAccount(AccountRequestDTO accountRequestDTO) {
+    public AccountResponseDTO createAccount(AccountCreateDTO accountCreateDTO) {
         log.info("Entering AccountServiceImpl.createAccount()");
-        log.info("AccountRequestDTO -> {} ", accountRequestDTO);
+        log.info("AccountRequestDTO -> {} ", accountCreateDTO);
 
-        Account account = toAccount(accountRequestDTO);
+        Account account = toAccount(accountCreateDTO);
         Account savedAccount = accountRepository.save(account);
 
         return toAccountResponseDTO(savedAccount);
     }
 
     @Override
-    public AccountResponseDTO updateAccount(Long accountId, AccountRequestDTO accountRequestDTO) {
+    public AccountResponseDTO updateAccount(Long accountId, AccountUpdateDTO accountUpdateDTO) {
         log.info("Entering AccountServiceImpl.updateAccount()");
         log.info("Account Id -> {} ", accountId);
-        log.info("AccountRequestDTO -> {} ", accountRequestDTO);
+        log.info("AccountRequestDTO -> {} ", accountUpdateDTO);
 
         Account account = getAccountByIdOrThrow(accountId);
-        if (accountRequestDTO.accountType() != null) account.setAccountType(accountRequestDTO.accountType());
-        if (accountRequestDTO.initialBalance() != null) account.setInitialBalance(accountRequestDTO.initialBalance());
-        if (accountRequestDTO.status() != account.isStatus()) account.setStatus(accountRequestDTO.status());
+        if (accountUpdateDTO.accountType() != null) account.setAccountType(accountUpdateDTO.accountType());
+        if (accountUpdateDTO.initialBalance() != null) account.setInitialBalance(accountUpdateDTO.initialBalance());
+        if (accountUpdateDTO.status() != account.isStatus()) account.setStatus(accountUpdateDTO.status());
 
         Account updatedAccount = accountRepository.save(account);
 
@@ -103,13 +104,13 @@ public class AccountServiceImpl implements AccountService {
                 .collect(Collectors.toList());
     }
 
-    private Account toAccount(AccountRequestDTO accountRequestDTO) {
+    private Account toAccount(AccountCreateDTO accountCreateDTO) {
         Account account = new Account();
         account.setAccountNumber(idGeneratorService.generateUniqueAccountNumber());
-        account.setAccountType(accountRequestDTO.accountType());
-        account.setInitialBalance(accountRequestDTO.initialBalance());
-        account.setStatus(accountRequestDTO.status());
-        account.setClientId(accountRequestDTO.clientId());
+        account.setAccountType(accountCreateDTO.accountType());
+        account.setInitialBalance(accountCreateDTO.initialBalance());
+        account.setStatus(accountCreateDTO.status());
+        account.setClientId(accountCreateDTO.clientId());
         return account;
     }
 

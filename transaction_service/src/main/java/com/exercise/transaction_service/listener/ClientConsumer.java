@@ -3,7 +3,7 @@ package com.exercise.transaction_service.listener;
 import com.exercise.transaction_service.listener.common.ClientProducerDTO;
 import com.exercise.transaction_service.domain.enums.AccountType;
 import com.exercise.transaction_service.service.AccountService;
-import com.exercise.transaction_service.service.dtos.AccountRequestDTO;
+import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +28,12 @@ public class ClientConsumer {
 
         log.info("Creating default account for client '{}'", clientProducerDTO.clientId());
 
-        AccountRequestDTO accountRequestDTO = new AccountRequestDTO(
-                null,
+        AccountCreateDTO accountCreateDTO = new AccountCreateDTO(
                 AccountType.AHORROS,
                 0.0,
                 true,
                 clientProducerDTO.clientId()
         );
-        accountService.createAccount(accountRequestDTO);
+        accountService.createAccount(accountCreateDTO);
     }
 }

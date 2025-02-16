@@ -8,7 +8,8 @@ import com.exercise.transaction_service.repository.AccountRepository;
 import com.exercise.transaction_service.repository.TransactionRepository;
 import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.TransactionService;
-import com.exercise.transaction_service.service.dtos.AccountRequestDTO;
+import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
+import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionRequestDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
 import org.slf4j.Logger;
@@ -68,8 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
 
         associatedAccount.setInitialBalance(newBalance);
-        accountService.updateAccount(associatedAccount.getAccountId(), new AccountRequestDTO(
-                associatedAccount.getAccountNumber(),
+        accountService.updateAccount(associatedAccount.getAccountId(), new AccountUpdateDTO(
                 associatedAccount.getAccountType(),
                 associatedAccount.getInitialBalance(),
                 associatedAccount.isStatus(),

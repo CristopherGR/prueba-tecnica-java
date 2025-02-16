@@ -4,7 +4,7 @@ import com.exercise.transaction_service.domain.enums.AccountType;
 import com.exercise.transaction_service.enums.TransactionType;
 import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.TransactionService;
-import com.exercise.transaction_service.service.dtos.AccountRequestDTO;
+import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
 import com.exercise.transaction_service.service.dtos.TransactionRequestDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
@@ -36,8 +36,7 @@ public class TransactionControllerIT {
     @Test
     public void getAllTransactionsIT() throws Exception {
 
-        AccountRequestDTO accountRequest = new AccountRequestDTO(
-                "AC-123",
+        AccountCreateDTO accountRequest = new AccountCreateDTO(
                 AccountType.AHORROS,
                 100.0,
                 true,

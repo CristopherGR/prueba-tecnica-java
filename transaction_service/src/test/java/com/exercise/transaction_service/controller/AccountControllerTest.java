@@ -2,7 +2,7 @@ package com.exercise.transaction_service.controller;
 
 import com.exercise.transaction_service.domain.enums.AccountType;
 import com.exercise.transaction_service.service.AccountService;
-import com.exercise.transaction_service.service.dtos.AccountRequestDTO;
+import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,22 +35,56 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void getAllAccountsTest() throws Exception {
-        AccountResponseDTO account1 = new AccountResponseDTO(
-                1L,
-                "AC-123",
+    public void createAccountTest() throws Exception {
+        AccountCreateDTO accountCreateDTO = new AccountCreateDTO(
                 AccountType.AHORROS,
                 100.0,
                 true,
-                "CL-1"
+                "CL-33409ab0e3a3478d"
+        );
+        AccountResponseDTO accountResponseDTO = new AccountResponseDTO(
+                1L,
+                "AC-33409ab0e0000000",
+                AccountType.AHORROS,
+                100.0,
+                true,
+                "CL-33409ab0e3a3478d"
+        );
+
+        when(accountService.createAccount(Mockito.any(AccountCreateDTO.class))).thenReturn(accountResponseDTO);
+
+        mockMvc.perform(post("/account")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(accountCreateDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.accountId").value(1L))
+                .andExpect(jsonPath("$.accountNumber").value(accountResponseDTO.accountNumber()))
+                .andExpect(jsonPath("$.accountType").value(accountResponseDTO.accountType().toString()))
+                .andExpect(jsonPath("$.initialBalance").value(accountResponseDTO.initialBalance()))
+                .andExpect(jsonPath("$.status").value(accountResponseDTO.status()))
+                .andExpect(jsonPath("$.clientId").value(accountResponseDTO.clientId()));
+
+        verify(accountService, times(1)).createAccount(Mockito.any(AccountCreateDTO.class));
+    }
+
+    @Test
+    public void getAllAccountsTest() throws Exception {
+        AccountResponseDTO account1 = new AccountResponseDTO(
+                1L,
+                "AC-33409ab0e0000000",
+                AccountType.AHORROS,
+                100.0,
+                true,
+                "CL-33409ab0e3a3478d"
         );
         AccountResponseDTO account2 = new AccountResponseDTO(
                 2L,
-                "AC-456",
+                "AC-33409ab0e0000333",
                 AccountType.CORRIENTE,
                 200.0,
                 true,
-                "CL-2"
+                "CL-33409ab0e3a34782"
         );
 
         List<AccountResponseDTO> mockAccounts = Arrays.asList(account1, account2);
@@ -62,44 +96,12 @@ public class AccountControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].accountId").value(1L))
-                .andExpect(jsonPath("$[0].accountNumber").value("AC-123"))
+                .andExpect(jsonPath("$[0].accountNumber").value("AC-33409ab0e0000000"))
                 .andExpect(jsonPath("$[0].accountType").value(AccountType.AHORROS.toString()))
                 .andExpect(jsonPath("$[1].accountId").value(2L))
-                .andExpect(jsonPath("$[1].accountNumber").value("AC-456"))
+                .andExpect(jsonPath("$[1].accountNumber").value("AC-33409ab0e0000333"))
                 .andExpect(jsonPath("$[1].accountType").value(AccountType.CORRIENTE.toString()));
 
         verify(accountService, times(1)).getAllAccounts();
-    }
-
-    @Test
-    public void createAccountTest() throws Exception {
-        AccountRequestDTO accountRequest = new AccountRequestDTO(
-                "AC-123",
-                AccountType.AHORROS,
-                100.0,
-                true,
-                "CL-1"
-        );
-        AccountResponseDTO createdAccount = new AccountResponseDTO(
-                1L,
-                "AC-123",
-                AccountType.AHORROS,
-                100.0,
-                true,
-                "CL-1"
-        );
-
-        when(accountService.createAccount(Mockito.any(AccountRequestDTO.class))).thenReturn(createdAccount);
-
-        mockMvc.perform(post("/account")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(accountRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.accountId").value(1L))
-                .andExpect(jsonPath("$.accountNumber").value("AC-123"))
-                .andExpect(jsonPath("$.accountType").value(AccountType.AHORROS.toString()));
-
-        verify(accountService, times(1)).createAccount(Mockito.any(AccountRequestDTO.class));
     }
 }

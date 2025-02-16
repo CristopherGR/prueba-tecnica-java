@@ -1,11 +1,10 @@
 package com.exercise.transaction_service.service;
 
 import com.exercise.transaction_service.domain.Account;
-import com.exercise.transaction_service.service.dtos.AccountRequestDTO;
+import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
-import com.exercise.transaction_service.service.dtos.ClientReportDTO;
+import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AccountService {
@@ -14,9 +13,9 @@ public interface AccountService {
 
     AccountResponseDTO getAccountById(Long accountId);
 
-    AccountResponseDTO createAccount(AccountRequestDTO accountRequestDTO);
+    AccountResponseDTO createAccount(AccountCreateDTO accountCreateDTO);
 
-    AccountResponseDTO updateAccount(Long accountId, AccountRequestDTO accountRequestDTO);
+    AccountResponseDTO updateAccount(Long accountId, AccountUpdateDTO accountUpdateDTO);
 
     void deleteAccount(Long accountId);
 
