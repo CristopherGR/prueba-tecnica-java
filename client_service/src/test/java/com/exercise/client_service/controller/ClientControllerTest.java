@@ -4,9 +4,9 @@ import com.exercise.client_service.domain.Client;
 import com.exercise.client_service.domain.enums.PersonGender;
 import com.exercise.client_service.exception.ClientNotFoundException;
 import com.exercise.client_service.exception.GlobalExceptionHandler;
-import com.exercise.client_service.service.dtos.ClientRequestDTO;
-import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.ClientService;
+import com.exercise.client_service.service.dtos.ClientResponseDTO;
+import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,45 +88,55 @@ public class ClientControllerTest {
 
     @Test
     public void updateClientTest() throws Exception {
-        ClientResponseDTO updatedClient = new ClientResponseDTO(
+        ClientUpdateDTO clientUpdateDTO = new ClientUpdateDTO(
+                "Updated Name",
+                PersonGender.MALE,
+                20L,
+                "Updated Address",
+                "0999138471",
+                "Updated password",
+                true
+        );
+
+        ClientResponseDTO clientResponseDTO = new ClientResponseDTO(
                 1L,
                 "Updated Name",
                 PersonGender.MALE,
                 20L,
-                "ID-123",
+                "0202129447",
                 "Updated Address",
-                "555-999",
+                "0999138471",
                 "CL-123",
                 "Updated password",
                 true
         );
 
-        Mockito.when(clientService.updateClient(eq("12345"), any(ClientRequestDTO.class)))
-                .thenReturn(updatedClient);
+        Mockito.when(clientService.updateClient(eq("CL-123"), any(ClientUpdateDTO.class)))
+                .thenReturn(clientResponseDTO);
 
-        mockMvc.perform(put("/client/12345")
+        mockMvc.perform(put("/client/CL-123")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatedClient)))
+                        .content(objectMapper.writeValueAsString(clientUpdateDTO)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("Updated Name"))
                 .andExpect(jsonPath("$.personGender").value(PersonGender.MALE.toString()))
                 .andExpect(jsonPath("$.age").value(20L))
                 .andExpect(jsonPath("$.address").value("Updated Address"))
-                .andExpect(jsonPath("$.phone").value("555-999"))
+                .andExpect(jsonPath("$.phone").value("0999138471"))
                 .andExpect(jsonPath("$.password").value("Updated password"))
                 .andExpect(jsonPath("$.status").value(true));
     }
 
     @Test
     public void failedUpdateClientTest() throws Exception {
-        Mockito.when(clientService.updateClient(eq("12345"), any(ClientRequestDTO.class)))
-                .thenThrow(new ClientNotFoundException("Client with ID 12345 not found"));
+        Mockito.when(clientService.updateClient(eq("CL-123"), any(ClientUpdateDTO.class)))
+                .thenThrow(new ClientNotFoundException("Client with ID CL-123 not found"));
 
-        mockMvc.perform(put("/client/12345")
+        mockMvc.perform(put("/client/CL-123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new Client())))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Client with ID 12345 not found"));
+                .andExpect(content().string("Client with ID CL-123 not found"));
     }
 }

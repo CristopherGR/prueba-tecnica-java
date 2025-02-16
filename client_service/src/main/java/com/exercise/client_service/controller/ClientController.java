@@ -4,6 +4,8 @@ import com.exercise.client_service.domain.Client;
 import com.exercise.client_service.service.dtos.ClientRequestDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.ClientService;
+import com.exercise.client_service.service.dtos.ClientUpdateDTO;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -48,10 +50,10 @@ public class ClientController {
     }
 
     @PutMapping("/{clientId}")
-    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable String clientId, @RequestBody ClientRequestDTO updatedClient) {
+    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable String clientId, @RequestBody @Valid ClientUpdateDTO clientUpdateDTO) {
         log.info("REST request to update Client by ID: {}", clientId);
 
-        ClientResponseDTO updated = clientService.updateClient(clientId, updatedClient);
+        ClientResponseDTO updated = clientService.updateClient(clientId, clientUpdateDTO);
         return ResponseEntity.ok(updated);
     }
 

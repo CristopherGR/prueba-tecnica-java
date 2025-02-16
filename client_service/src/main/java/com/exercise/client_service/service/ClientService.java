@@ -3,6 +3,7 @@ package com.exercise.client_service.service;
 import com.exercise.client_service.domain.Client;
 import com.exercise.client_service.service.dtos.ClientRequestDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
+import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface ClientService {
 
     ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO);
 
-    ClientResponseDTO updateClient(String clientId, ClientRequestDTO clientRequestDTO);
+    ClientResponseDTO updateClient(String clientId, ClientUpdateDTO clientUpdateDTO);
 
     void deleteClient(String clientId);
 

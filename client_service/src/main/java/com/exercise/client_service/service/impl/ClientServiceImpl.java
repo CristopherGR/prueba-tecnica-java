@@ -7,6 +7,7 @@ import com.exercise.client_service.repository.ClientRepository;
 import com.exercise.client_service.service.ClientService;
 import com.exercise.client_service.service.dtos.ClientRequestDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
+import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 import com.exercise.client_service.service.utils.IdGeneratorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,20 +69,20 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponseDTO updateClient(String clientId, ClientRequestDTO clientRequestDTO) {
+    public ClientResponseDTO updateClient(String clientId, ClientUpdateDTO clientUpdateDTO) {
         log.info("Entering ClientServiceImpl.updateClient()");
         log.info("Client Id -> {}", clientId);
-        log.info("ClientRequestDTO -> {}", clientRequestDTO);
+        log.info("ClientRequestDTO -> {}", clientUpdateDTO);
 
         Client existingClient = getClientByIdOrThrows(clientId);
 
-        if (clientRequestDTO.name() != null) existingClient.setName(clientRequestDTO.name());
-        if (clientRequestDTO.personGender() != null) existingClient.setGender(clientRequestDTO.personGender());
-        if (clientRequestDTO.age() != null) existingClient.setAge(clientRequestDTO.age());
-        if (clientRequestDTO.address() != null) existingClient.setAddress(clientRequestDTO.address());
-        if (clientRequestDTO.phone() != null) existingClient.setPhone(clientRequestDTO.phone());
-        if (clientRequestDTO.password() != null) existingClient.setPassword(clientRequestDTO.password());
-        if (clientRequestDTO.status() != existingClient.isStatus()) existingClient.setStatus(clientRequestDTO.status());
+        if (clientUpdateDTO.name() != null) existingClient.setName(clientUpdateDTO.name());
+        if (clientUpdateDTO.personGender() != null) existingClient.setGender(clientUpdateDTO.personGender());
+        if (clientUpdateDTO.age() != null) existingClient.setAge(clientUpdateDTO.age());
+        if (clientUpdateDTO.address() != null) existingClient.setAddress(clientUpdateDTO.address());
+        if (clientUpdateDTO.phone() != null) existingClient.setPhone(clientUpdateDTO.phone());
+        if (clientUpdateDTO.password() != null) existingClient.setPassword(clientUpdateDTO.password());
+        if (clientUpdateDTO.status() != existingClient.isStatus()) existingClient.setStatus(clientUpdateDTO.status());
 
         Client updatedClient = clientRepository.save(existingClient);
 
