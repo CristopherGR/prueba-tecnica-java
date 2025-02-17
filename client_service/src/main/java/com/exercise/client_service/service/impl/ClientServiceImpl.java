@@ -8,6 +8,7 @@ import com.exercise.client_service.service.ClientService;
 import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
+import com.exercise.client_service.service.mappers.ClientMapper;
 import com.exercise.client_service.service.utils.IdGeneratorService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,8 +24,9 @@ public class ClientServiceImpl implements ClientService {
     private static final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
 
     private final ClientRepository clientRepository;
-    private final IdGeneratorService idGeneratorService;
     private final ClientProducer clientProducer;
+    private final ClientMapper clientMapper;
+    private final IdGeneratorService idGeneratorService;
 
     @Override
     public List<ClientResponseDTO> getAllClients() {
@@ -33,7 +35,7 @@ public class ClientServiceImpl implements ClientService {
         List<Client> clientList = clientRepository.findAll();
 
         return clientList.stream()
-                .map(this::toClientResponseDTO)
+                .map(clientMapper::toClientResponseDTO)
                 .collect(Collectors.toList());
     }
 
@@ -43,7 +45,7 @@ public class ClientServiceImpl implements ClientService {
         log.info("Client Id -> {}", clientId);
 
         Client existingClient = getClientByIdOrThrows(clientId);
-        return toClientResponseDTO(existingClient);
+        return clientMapper.toClientResponseDTO(existingClient);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ClientServiceImpl implements ClientService {
         log.info("Entering ClientServiceImpl.createClient()");
         log.info("ClientRequestDTO -> {}", clientCreateDTO);
 
-        Client client = toClient(clientCreateDTO);
+        Client client = clientMapper.toClient(clientCreateDTO);
         client.setClientId(idGeneratorService.generateUniqueClientId());
         Client savedClient = clientRepository.save(client);
 
@@ -59,7 +61,7 @@ public class ClientServiceImpl implements ClientService {
         // una vez con el requerimiento de establecer comunicacion asincrona entre los dos microservicios
         clientProducer.sendCreatedClient(savedClient);
 
-        return toClientResponseDTO(savedClient);
+        return clientMapper.toClientResponseDTO(savedClient);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class ClientServiceImpl implements ClientService {
 
         Client updatedClient = clientRepository.save(existingClient);
 
-        return toClientResponseDTO(updatedClient);
+        return clientMapper.toClientResponseDTO(updatedClient);
     }
 
     @Override
@@ -99,34 +101,5 @@ public class ClientServiceImpl implements ClientService {
 
         return clientRepository.findByClientId(clientId)
                 .orElseThrow(() -> new ClientNotFoundException("Client with ID " + clientId + " not found"));
-    }
-
-    private Client toClient(ClientCreateDTO clientCreateDTO) {
-        Client client = new Client();
-        client.setName(clientCreateDTO.name());
-        client.setGender(clientCreateDTO.personGender());
-        client.setAge(clientCreateDTO.age());
-        client.setIdentification(clientCreateDTO.identification());
-        client.setAddress(clientCreateDTO.address());
-        client.setPhone(clientCreateDTO.phone());
-        client.setPassword(clientCreateDTO.password());
-        client.setStatus(clientCreateDTO.status());
-
-        return client;
-    }
-
-    private ClientResponseDTO toClientResponseDTO(Client client) {
-        return new ClientResponseDTO(
-                client.getPersonId(),
-                client.getName(),
-                client.getGender(),
-                client.getAge(),
-                client.getIdentification(),
-                client.getAddress(),
-                client.getPhone(),
-                client.getClientId(),
-                client.getPassword(),
-                client.isStatus()
-        );
     }
 }
