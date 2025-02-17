@@ -12,6 +12,7 @@ import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionCreateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
 import com.exercise.transaction_service.service.dtos.TransactionUpdateDTO;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,16 +22,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
     private static final Logger log = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
-
-    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountRepository accountRepository, AccountService accountService) {
-        this.transactionRepository = transactionRepository;
-        this.accountService = accountService;
-    }
 
     @Override
     public List<TransactionResponseDTO> getAllTransactions() {

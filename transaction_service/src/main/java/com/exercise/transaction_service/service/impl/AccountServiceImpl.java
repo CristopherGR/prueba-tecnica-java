@@ -8,6 +8,7 @@ import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
 import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 import com.exercise.transaction_service.service.utils.IdGeneratorService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
     private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
 
     private final AccountRepository accountRepository;
     private final IdGeneratorService idGeneratorService;
-
-    public AccountServiceImpl(AccountRepository accountRepository, IdGeneratorService idGeneratorService) {
-        this.accountRepository = accountRepository;
-        this.idGeneratorService = idGeneratorService;
-    }
 
     @Override
     public List<AccountResponseDTO> getAllAccounts() {

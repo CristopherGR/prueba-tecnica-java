@@ -9,6 +9,7 @@ import com.exercise.transaction_service.service.dtos.AccountReportDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
 import com.exercise.transaction_service.service.dtos.ClientReportDTO;
 import com.exercise.transaction_service.service.dtos.TransactionReportDTO;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
     private static final Logger log = LoggerFactory.getLogger(ReportServiceImpl.class);
 
     private final AccountService accountService;
     private final TransactionService transactionService;
-
-    public ReportServiceImpl(AccountService accountService, TransactionService transactionService) {
-        this.accountService = accountService;
-        this.transactionService = transactionService;
-    }
 
     @Override
     public ClientReportDTO getDetailedReport(String clientId, LocalDateTime startDate, LocalDateTime endDate) {

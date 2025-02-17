@@ -1,7 +1,7 @@
 package com.exercise.transaction_service.controller;
 
 import com.exercise.transaction_service.domain.enums.AccountType;
-import com.exercise.transaction_service.enums.TransactionType;
+import com.exercise.transaction_service.domain.enums.TransactionType;
 import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.TransactionService;
 import com.exercise.transaction_service.service.dtos.AccountCreateDTO;

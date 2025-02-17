@@ -5,6 +5,7 @@ import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
 import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,14 +16,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/account")
+@RequiredArgsConstructor
 public class AccountController {
     private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 
     private final AccountService accountService;
-
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     @GetMapping
     public ResponseEntity<List<AccountResponseDTO>> getAllAccounts() {

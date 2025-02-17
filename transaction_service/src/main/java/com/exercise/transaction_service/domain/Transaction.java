@@ -1,6 +1,6 @@
 package com.exercise.transaction_service.domain;
 
-import com.exercise.transaction_service.enums.TransactionType;
+import com.exercise.transaction_service.domain.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
 
