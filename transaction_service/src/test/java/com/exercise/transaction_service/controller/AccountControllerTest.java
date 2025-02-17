@@ -13,7 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -87,7 +89,7 @@ public class AccountControllerTest {
                 "CL-33409ab0e3a34782"
         );
 
-        List<AccountResponseDTO> mockAccounts = Arrays.asList(account1, account2);
+        Set<AccountResponseDTO> mockAccounts = new HashSet<>(Arrays.asList(account1, account2));
         Mockito.when(accountService.getAllAccounts()).thenReturn(mockAccounts);
 
         mockMvc.perform(get("/account")

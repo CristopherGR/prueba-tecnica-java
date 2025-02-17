@@ -7,10 +7,11 @@ import com.exercise.transaction_service.service.dtos.TransactionUpdateDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface TransactionService {
 
-    List<TransactionResponseDTO> getAllTransactions();
+    Set<TransactionResponseDTO> getAllTransactions();
 
     TransactionResponseDTO getTransactionById(Long transactionId);
 

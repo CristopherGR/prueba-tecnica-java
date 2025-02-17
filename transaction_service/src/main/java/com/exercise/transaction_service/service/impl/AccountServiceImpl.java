@@ -14,7 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +28,14 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     @Override
-    public List<AccountResponseDTO> getAllAccounts() {
+    public Set<AccountResponseDTO> getAllAccounts() {
         log.info("Entering AccountServiceImpl.getAllAccounts()");
 
         List<Account> accounts = accountRepository.findAll();
 
         return accounts.stream()
                 .map(accountMapper::toAccountResponseDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override

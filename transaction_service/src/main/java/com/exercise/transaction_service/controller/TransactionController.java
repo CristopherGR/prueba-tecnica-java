@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/transaction")
@@ -23,10 +23,10 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<List<TransactionResponseDTO>> getAllTransactions() {
+    public ResponseEntity<Set<TransactionResponseDTO>> getAllTransactions() {
         log.info("REST request to get all transactions");
 
-        List<TransactionResponseDTO> transactions = transactionService.getAllTransactions();
+        Set<TransactionResponseDTO> transactions = transactionService.getAllTransactions();
         return ResponseEntity.ok(transactions);
     }
 

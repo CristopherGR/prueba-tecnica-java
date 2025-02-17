@@ -19,7 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,14 +34,14 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionMapper transactionMapper;
 
     @Override
-    public List<TransactionResponseDTO> getAllTransactions() {
+    public Set<TransactionResponseDTO> getAllTransactions() {
         log.info("Entering TransactionServiceImpl.getAllTransactions()");
 
         List<Transaction> transactions = transactionRepository.findAll();
 
         return transactions.stream()
                 .map(transactionMapper::toTransactionResponseDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override

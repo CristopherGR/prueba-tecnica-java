@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/account")
@@ -23,10 +24,10 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping
-    public ResponseEntity<List<AccountResponseDTO>> getAllAccounts() {
+    public ResponseEntity<Set<AccountResponseDTO>> getAllAccounts() {
         log.info("REST request to get all accounts");
 
-        List<AccountResponseDTO> accounts = accountService.getAllAccounts();
+        Set<AccountResponseDTO> accounts = accountService.getAllAccounts();
         return ResponseEntity.ok(accounts);
     }
 

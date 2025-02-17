@@ -6,10 +6,11 @@ import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
 import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AccountService {
 
-    List<AccountResponseDTO> getAllAccounts();
+    Set<AccountResponseDTO> getAllAccounts();
 
     AccountResponseDTO getAccountById(Long accountId);
 
