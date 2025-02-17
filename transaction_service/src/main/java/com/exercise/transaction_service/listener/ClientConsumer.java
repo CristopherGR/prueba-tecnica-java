@@ -4,7 +4,7 @@ import com.exercise.transaction_service.listener.common.ClientProducerDTO;
 import com.exercise.transaction_service.domain.enums.AccountType;
 import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
-import com.exercise.transaction_service.service.utils.JsonUtils;
+import com.exercise.transaction_service.service.utils.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class ClientConsumer {
     public void createdClientTopic(String message) {
         log.info("Message received from Kafka Topic 'clientCreatedTopic' -> {}", message);
 
-        var clientProducerDTO = JsonUtils.fromJson(message, ClientProducerDTO.class);
+        var clientProducerDTO = JsonUtil.fromJson(message, ClientProducerDTO.class);
 
         log.info("Creating default account for client '{}'", clientProducerDTO.clientId());
 

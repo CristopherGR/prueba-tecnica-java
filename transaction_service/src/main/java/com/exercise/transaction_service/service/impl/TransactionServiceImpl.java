@@ -4,7 +4,6 @@ import com.exercise.transaction_service.domain.Account;
 import com.exercise.transaction_service.domain.Transaction;
 import com.exercise.transaction_service.exception.AccountNotFoundException;
 import com.exercise.transaction_service.exception.UnavailableBalanceException;
-import com.exercise.transaction_service.repository.AccountRepository;
 import com.exercise.transaction_service.repository.TransactionRepository;
 import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.TransactionService;
@@ -12,6 +11,8 @@ import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionCreateDTO;
 import com.exercise.transaction_service.service.dtos.TransactionResponseDTO;
 import com.exercise.transaction_service.service.dtos.TransactionUpdateDTO;
+import com.exercise.transaction_service.service.mappers.TransactionMapper;
+import com.exercise.transaction_service.service.utils.UpdateUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
+    private final TransactionMapper transactionMapper;
 
     @Override
     public List<TransactionResponseDTO> getAllTransactions() {
@@ -36,7 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> transactions = transactionRepository.findAll();
 
         return transactions.stream()
-                .map(this::toTransactionResponseDTO)
+                .map(transactionMapper::toTransactionResponseDTO)
                 .collect(Collectors.toList());
     }
 
@@ -47,7 +49,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = getTransactionByIdOrThrows(transactionId);
 
-        return toTransactionResponseDTO(transaction);
+        return transactionMapper.toTransactionResponseDTO(transaction);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class TransactionServiceImpl implements TransactionService {
         Double newBalance = currentBalance + transactionCreateDTO.amount();
         if (newBalance < 0) throw new UnavailableBalanceException("Saldo insuficiente para realizar el movimiento");
 
-        Transaction transaction = toTransaction(transactionCreateDTO);
+        Transaction transaction = transactionMapper.toTransaction(transactionCreateDTO);
         transaction.setBalance(newBalance);
         Transaction savedTransaction = transactionRepository.save(transaction);
 
@@ -75,7 +77,7 @@ public class TransactionServiceImpl implements TransactionService {
                 associatedAccount.getClientId()
         ));
 
-        return toTransactionResponseDTO(savedTransaction);
+        return transactionMapper.toTransactionResponseDTO(savedTransaction);
     }
 
     @Override
@@ -84,13 +86,13 @@ public class TransactionServiceImpl implements TransactionService {
         log.info("Transaction Id -> {} ", transactionId);
         log.info("TransactionRequestDTO -> {} ", transactionUpdateDTO);
 
-        Transaction transaction = getTransactionByIdOrThrows(transactionId);
-        if (transactionUpdateDTO.transactionType() != null) transaction.setTransactionType(transactionUpdateDTO.transactionType());
-        if (transactionUpdateDTO.amount() != null) transaction.setAmount(transactionUpdateDTO.amount());
+        Transaction existingTransaction = getTransactionByIdOrThrows(transactionId);
+        UpdateUtil.updateIfNotNull(transactionUpdateDTO.transactionType(), existingTransaction::setTransactionType);
+        UpdateUtil.updateIfNotNull(transactionUpdateDTO.amount(), existingTransaction::setAmount);
 
-        Transaction updatedTransaction = transactionRepository.save(transaction);
+        Transaction updatedTransaction = transactionRepository.save(existingTransaction);
 
-        return toTransactionResponseDTO(updatedTransaction);
+        return transactionMapper.toTransactionResponseDTO(updatedTransaction);
     }
 
     @Override
@@ -119,25 +121,5 @@ public class TransactionServiceImpl implements TransactionService {
         log.info("End Date -> {} ", endDate);
 
         return transactionRepository.findByAccount_AccountIdAndTransactionDateBetween(accountId, startDate, endDate);
-    }
-
-    private Transaction toTransaction(TransactionCreateDTO transactionCreateDTO) {
-        Transaction transaction = new Transaction();
-        transaction.setTransactionDate(LocalDateTime.now());
-        transaction.setTransactionType(transactionCreateDTO.transactionType());
-        transaction.setAmount(transactionCreateDTO.amount());
-        transaction.setAccount(accountService.getAccountByIdOrThrow(transactionCreateDTO.accountId()));
-        return transaction;
-    }
-
-    private TransactionResponseDTO toTransactionResponseDTO(Transaction transaction) {
-        return new TransactionResponseDTO(
-                transaction.getTransactionId(),
-                transaction.getTransactionDate(),
-                transaction.getTransactionType(),
-                transaction.getAmount(),
-                transaction.getBalance(),
-                transaction.getAccount().getAccountId()
-        );
     }
 }

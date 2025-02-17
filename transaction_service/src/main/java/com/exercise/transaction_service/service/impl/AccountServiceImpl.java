@@ -7,7 +7,8 @@ import com.exercise.transaction_service.service.AccountService;
 import com.exercise.transaction_service.service.dtos.AccountCreateDTO;
 import com.exercise.transaction_service.service.dtos.AccountResponseDTO;
 import com.exercise.transaction_service.service.dtos.AccountUpdateDTO;
-import com.exercise.transaction_service.service.utils.IdGeneratorService;
+import com.exercise.transaction_service.service.mappers.AccountMapper;
+import com.exercise.transaction_service.service.utils.UpdateUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
     private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
 
     private final AccountRepository accountRepository;
-    private final IdGeneratorService idGeneratorService;
+    private final AccountMapper accountMapper;
 
     @Override
     public List<AccountResponseDTO> getAllAccounts() {
@@ -31,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
         List<Account> accounts = accountRepository.findAll();
 
         return accounts.stream()
-                .map(this::toAccountResponseDTO)
+                .map(accountMapper::toAccountResponseDTO)
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
         log.info("Account Id -> {} ", accountId);
 
         Account account = getAccountByIdOrThrow(accountId);
-        return toAccountResponseDTO(account);
+        return accountMapper.toAccountResponseDTO(account);
     }
 
     @Override
@@ -49,10 +50,10 @@ public class AccountServiceImpl implements AccountService {
         log.info("Entering AccountServiceImpl.createAccount()");
         log.info("AccountRequestDTO -> {} ", accountCreateDTO);
 
-        Account account = toAccount(accountCreateDTO);
+        Account account = accountMapper.toAccount(accountCreateDTO);
         Account savedAccount = accountRepository.save(account);
 
-        return toAccountResponseDTO(savedAccount);
+        return accountMapper.toAccountResponseDTO(savedAccount);
     }
 
     @Override
@@ -61,14 +62,14 @@ public class AccountServiceImpl implements AccountService {
         log.info("Account Id -> {} ", accountId);
         log.info("AccountRequestDTO -> {} ", accountUpdateDTO);
 
-        Account account = getAccountByIdOrThrow(accountId);
-        if (accountUpdateDTO.accountType() != null) account.setAccountType(accountUpdateDTO.accountType());
-        if (accountUpdateDTO.initialBalance() != null) account.setInitialBalance(accountUpdateDTO.initialBalance());
-        if (accountUpdateDTO.status() != account.isStatus()) account.setStatus(accountUpdateDTO.status());
+        Account existingAccount = getAccountByIdOrThrow(accountId);
+        UpdateUtil.updateIfNotNull(accountUpdateDTO.accountType(), existingAccount::setAccountType);
+        UpdateUtil.updateIfNotNull(accountUpdateDTO.initialBalance(), existingAccount::setInitialBalance);
+        UpdateUtil.updateIfNotNull(accountUpdateDTO.status(), existingAccount::setStatus);
 
-        Account updatedAccount = accountRepository.save(account);
+        Account updatedAccount = accountRepository.save(existingAccount);
 
-        return toAccountResponseDTO(updatedAccount);
+        return accountMapper.toAccountResponseDTO(updatedAccount);
     }
 
     @Override
@@ -97,28 +98,7 @@ public class AccountServiceImpl implements AccountService {
         List<Account> accountList = accountRepository.findAllByClientId(clientId);
 
         return accountList.stream()
-                .map(this::toAccountResponseDTO)
+                .map(accountMapper::toAccountResponseDTO)
                 .collect(Collectors.toList());
-    }
-
-    private Account toAccount(AccountCreateDTO accountCreateDTO) {
-        Account account = new Account();
-        account.setAccountNumber(idGeneratorService.generateUniqueAccountNumber());
-        account.setAccountType(accountCreateDTO.accountType());
-        account.setInitialBalance(accountCreateDTO.initialBalance());
-        account.setStatus(accountCreateDTO.status());
-        account.setClientId(accountCreateDTO.clientId());
-        return account;
-    }
-
-    private AccountResponseDTO toAccountResponseDTO(Account account) {
-        return new AccountResponseDTO(
-                account.getAccountId(),
-                account.getAccountNumber(),
-                account.getAccountType(),
-                account.getInitialBalance(),
-                account.isStatus(),
-                account.getClientId()
-        );
     }
 }

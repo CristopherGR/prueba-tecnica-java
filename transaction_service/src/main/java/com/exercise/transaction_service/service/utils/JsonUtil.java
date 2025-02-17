@@ -2,7 +2,7 @@ package com.exercise.transaction_service.service.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonUtils {
+public class JsonUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
