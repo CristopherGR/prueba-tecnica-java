@@ -37,9 +37,11 @@ public class ReportServiceImpl implements ReportService {
         List<AccountResponseDTO> accounts = accountService.getAccountsByClientId(clientId);
         if (accounts.isEmpty()) throw new AccountNotFoundException("No Accounts found for Client: " + clientId);
 
+        // Forma una lista por cada cuenta del cliente con sus respectivas transacciones
         List<AccountReportDTO> accountReportDTOList = accounts.stream()
                 .map(account -> {
 
+                    // Busca las transacciones de la cuenta actual en cierto rango de fechas
                     List<Transaction> transactions =
                             transactionService.getByAccountIdAndDateRange(
                                     account.accountId(),
@@ -47,6 +49,7 @@ public class ReportServiceImpl implements ReportService {
                                     endDate
                             );
 
+                    // Devuelve una lista de DTO con las transacciones anteriores
                     List<TransactionReportDTO> transactionReportDTOList = transactions.stream()
                             .map(transaction -> new TransactionReportDTO(
                                     transaction.getTransactionId(),
@@ -57,6 +60,7 @@ public class ReportServiceImpl implements ReportService {
                             ))
                             .collect(Collectors.toList());
 
+                    //Retorna un reporte de la cuenta actual con sus trasacciones
                     return new AccountReportDTO(
                             account.accountNumber(),
                             account.initialBalance(),

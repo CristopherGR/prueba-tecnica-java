@@ -6,6 +6,7 @@ public class JsonUtils {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    // Retorna un JSON basado en un Objeto
     public static String toJson(Object obj) {
         try {
             return objectMapper.writeValueAsString(obj);
@@ -14,6 +15,7 @@ public class JsonUtils {
         }
     }
 
+    // Retorna un Objeto basado en un JSON
     public static <T> T fromJson(String json, Class<T> clazz) {
         try {
             return objectMapper.readValue(json, clazz);

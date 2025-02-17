@@ -55,9 +55,10 @@ public class TransactionServiceImpl implements TransactionService {
         log.info("Entering TransactionServiceImpl.createTransaction()");
         log.info("TransactionRequestDTO -> {} ", transactionCreateDTO);
 
+        // Se crea la transaccion con una validacion previa del saldo actual
         Account associatedAccount = accountService.getAccountByIdOrThrow(transactionCreateDTO.accountId());
-        Double currentBalance = associatedAccount.getInitialBalance();
 
+        Double currentBalance = associatedAccount.getInitialBalance();
         Double newBalance = currentBalance + transactionCreateDTO.amount();
         if (newBalance < 0) throw new UnavailableBalanceException("Saldo insuficiente para realizar el movimiento");
 
@@ -65,6 +66,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setBalance(newBalance);
         Transaction savedTransaction = transactionRepository.save(transaction);
 
+        // Se actualiza el saldo actual en la cuenta en base a la transaccion anterior
         associatedAccount.setInitialBalance(newBalance);
         accountService.updateAccount(associatedAccount.getAccountId(), new AccountUpdateDTO(
                 associatedAccount.getAccountType(),
