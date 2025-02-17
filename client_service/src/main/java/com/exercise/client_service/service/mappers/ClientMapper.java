@@ -3,8 +3,9 @@ package com.exercise.client_service.service.mappers;
 import com.exercise.client_service.domain.Client;
 import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
-import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 import org.springframework.stereotype.Component;
+
+import java.util.function.Consumer;
 
 @Component
 public class ClientMapper {
@@ -34,10 +35,15 @@ public class ClientMapper {
                 client.getPhone(),
                 client.getClientId(),
                 client.getPassword(),
-                client.isStatus()
+                client.getStatus()
         );
     }
-    public void updateClientFromDTO(ClientUpdateDTO clientUpdateDTO, Client existingClient) {
+
+    // Si el primer parametro recibio no es nulo, permite la ejecucion de la funcion recibida como segundo parametro
+    public <T> void updateIfNotNull(T sourceValue, Consumer<T> setter) {
+        if (sourceValue != null) {
+            setter.accept(sourceValue);
+        }
     }
 }
 

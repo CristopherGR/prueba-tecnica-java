@@ -27,6 +27,6 @@ public class Client extends Person {
     @Size(max = 100)
     String password;
 
-    boolean status;
+    Boolean status;
 }
 

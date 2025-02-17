@@ -24,7 +24,7 @@ public class ClientUnitTest {
 
         assertEquals("CL-5487945874154687", client.getClientId());
         assertEquals("password", client.getPassword());
-        assertTrue(client.isStatus());
+        assertTrue(client.getStatus());
         assertEquals("Name", client.getName());
         assertEquals(PersonGender.MALE, client.getGender());
         assertEquals(30L, client.getAge());

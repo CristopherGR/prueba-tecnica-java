@@ -72,13 +72,13 @@ public class ClientServiceImpl implements ClientService {
 
         Client existingClient = getClientByIdOrThrows(clientId);
 
-        if (clientUpdateDTO.name() != null) existingClient.setName(clientUpdateDTO.name());
-        if (clientUpdateDTO.personGender() != null) existingClient.setGender(clientUpdateDTO.personGender());
-        if (clientUpdateDTO.age() != null) existingClient.setAge(clientUpdateDTO.age());
-        if (clientUpdateDTO.address() != null) existingClient.setAddress(clientUpdateDTO.address());
-        if (clientUpdateDTO.phone() != null) existingClient.setPhone(clientUpdateDTO.phone());
-        if (clientUpdateDTO.password() != null) existingClient.setPassword(clientUpdateDTO.password());
-        if (clientUpdateDTO.status() != existingClient.isStatus()) existingClient.setStatus(clientUpdateDTO.status());
+        clientMapper.updateIfNotNull(clientUpdateDTO.name(), existingClient::setName);
+        clientMapper.updateIfNotNull(clientUpdateDTO.personGender(), existingClient::setGender);
+        clientMapper.updateIfNotNull(clientUpdateDTO.age(), existingClient::setAge);
+        clientMapper.updateIfNotNull(clientUpdateDTO.address(), existingClient::setAddress);
+        clientMapper.updateIfNotNull(clientUpdateDTO.phone(), existingClient::setPhone);
+        clientMapper.updateIfNotNull(clientUpdateDTO.password(), existingClient::setPassword);
+        clientMapper.updateIfNotNull(clientUpdateDTO.status(), existingClient::setStatus);
 
         Client updatedClient = clientRepository.save(existingClient);
 
