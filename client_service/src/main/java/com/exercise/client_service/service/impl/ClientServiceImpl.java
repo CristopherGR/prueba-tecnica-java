@@ -9,28 +9,22 @@ import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 import com.exercise.client_service.service.utils.IdGeneratorService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
     private static final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
 
     private final ClientRepository clientRepository;
     private final IdGeneratorService idGeneratorService;
     private final ClientProducer clientProducer;
-
-
-    public ClientServiceImpl(ClientRepository clientRepository, IdGeneratorService idGeneratorService, KafkaTemplate<String, Client> kafkaTemplate, ClientProducer clientProducer) {
-        this.clientRepository = clientRepository;
-        this.idGeneratorService = idGeneratorService;
-        this.clientProducer = clientProducer;
-    }
 
     @Override
     public List<ClientResponseDTO> getAllClients() {

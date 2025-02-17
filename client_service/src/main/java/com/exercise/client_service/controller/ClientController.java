@@ -1,11 +1,12 @@
 package com.exercise.client_service.controller;
 
 import com.exercise.client_service.domain.Client;
+import com.exercise.client_service.service.ClientService;
 import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
-import com.exercise.client_service.service.ClientService;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,14 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/client")
+@RequiredArgsConstructor
 public class ClientController {
     private static final Logger log = LoggerFactory.getLogger(ClientController.class);
 
     private final ClientService clientService;
-
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
-    }
 
     @GetMapping
     public ResponseEntity<List<ClientResponseDTO>> getAllClients() {
