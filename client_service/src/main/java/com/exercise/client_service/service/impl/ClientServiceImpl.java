@@ -16,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,14 +31,14 @@ public class ClientServiceImpl implements ClientService {
     private final ClientMapper clientMapper;
 
     @Override
-    public List<ClientResponseDTO> getAllClients() {
+    public Set<ClientResponseDTO> getAllClients() {
         log.info("Entering ClientServiceImpl.getAllClients()");
 
         List<Client> clientList = clientRepository.findAll();
 
         return clientList.stream()
                 .map(clientMapper::toClientResponseDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override

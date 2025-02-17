@@ -6,10 +6,11 @@ import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ClientService {
 
-    List<ClientResponseDTO> getAllClients();
+    Set<ClientResponseDTO> getAllClients();
 
     ClientResponseDTO getByClientId(String clientId);
 

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -68,7 +69,8 @@ public class ClientControllerTest {
                 false
         );
 
-        Mockito.when(clientService.getAllClients()).thenReturn(Arrays.asList(client1, client2));
+        Mockito.when(clientService.getAllClients()).thenReturn(new HashSet<>(Arrays.asList(client1, client2)));
+
 
         mockMvc.perform(get("/client"))
                 .andExpect(status().isOk())

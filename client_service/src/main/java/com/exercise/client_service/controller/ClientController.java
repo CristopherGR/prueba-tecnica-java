@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/client")
@@ -24,10 +25,10 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<ClientResponseDTO>> getAllClients() {
+    public ResponseEntity<Set<ClientResponseDTO>> getAllClients() {
         log.info("REST request to get all clients");
 
-        List<ClientResponseDTO> clients = clientService.getAllClients();
+        Set<ClientResponseDTO> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);
     }
 
