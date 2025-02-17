@@ -3,17 +3,17 @@ package com.exercise.client_service.domain;
 import com.exercise.client_service.domain.enums.PersonGender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "person")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-@ToString
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Person {
 
@@ -42,16 +42,4 @@ public class Person {
     @Column(length = 20)
     @Size(max = 20)
     String phone;
-
-    public Person() {
-    }
-
-    public Person(String name, PersonGender gender, Long age, String identification, String address, String phone) {
-        this.name = name;
-        this.gender = gender;
-        this.age = age;
-        this.identification = identification;
-        this.address = address;
-        this.phone = phone;
-    }
 }

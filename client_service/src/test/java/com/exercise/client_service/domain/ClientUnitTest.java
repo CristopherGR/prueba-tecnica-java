@@ -10,17 +10,17 @@ public class ClientUnitTest {
 
     @Test
     public void clientCreationTest() {
-        Client client = new Client(
-                "CL-5487945874154687",
-                "password",
-                true,
-                "Name",
-                PersonGender.MALE,
-                30L,
-                "1234567890",
-                "Address",
-                "555-1234"
-        );
+        Client client = Client.builder()
+                .clientId("CL-5487945874154687")
+                .password("password")
+                .status(true)
+                .name("Name")
+                .gender(PersonGender.MALE)
+                .age(30L)
+                .identification("0212548774")
+                .address("Address")
+                .phone("555-1234")
+                .build();
 
         assertEquals("CL-5487945874154687", client.getClientId());
         assertEquals("password", client.getPassword());
@@ -28,7 +28,7 @@ public class ClientUnitTest {
         assertEquals("Name", client.getName());
         assertEquals(PersonGender.MALE, client.getGender());
         assertEquals(30L, client.getAge());
-        assertEquals("1234567890", client.getIdentification());
+        assertEquals("0212548774", client.getIdentification());
         assertEquals("Address", client.getAddress());
         assertEquals("555-1234", client.getPhone());
     }
