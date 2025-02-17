@@ -9,7 +9,8 @@ import com.exercise.client_service.service.dtos.ClientCreateDTO;
 import com.exercise.client_service.service.dtos.ClientResponseDTO;
 import com.exercise.client_service.service.dtos.ClientUpdateDTO;
 import com.exercise.client_service.service.mappers.ClientMapper;
-import com.exercise.client_service.service.utils.IdGeneratorService;
+import com.exercise.client_service.service.utils.IdGeneratorUtil;
+import com.exercise.client_service.service.utils.UpdateUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,6 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final ClientProducer clientProducer;
     private final ClientMapper clientMapper;
-    private final IdGeneratorService idGeneratorService;
 
     @Override
     public List<ClientResponseDTO> getAllClients() {
@@ -54,7 +54,7 @@ public class ClientServiceImpl implements ClientService {
         log.info("ClientRequestDTO -> {}", clientCreateDTO);
 
         Client client = clientMapper.toClient(clientCreateDTO);
-        client.setClientId(idGeneratorService.generateUniqueClientId());
+        client.setClientId(IdGeneratorUtil.generateUniqueClientId());
         Client savedClient = clientRepository.save(client);
 
         // Envio de mensaje con Kafka para crear una cuenta en el segundo microservicio y cumplir por lo menos
@@ -72,13 +72,13 @@ public class ClientServiceImpl implements ClientService {
 
         Client existingClient = getClientByIdOrThrows(clientId);
 
-        clientMapper.updateIfNotNull(clientUpdateDTO.name(), existingClient::setName);
-        clientMapper.updateIfNotNull(clientUpdateDTO.personGender(), existingClient::setGender);
-        clientMapper.updateIfNotNull(clientUpdateDTO.age(), existingClient::setAge);
-        clientMapper.updateIfNotNull(clientUpdateDTO.address(), existingClient::setAddress);
-        clientMapper.updateIfNotNull(clientUpdateDTO.phone(), existingClient::setPhone);
-        clientMapper.updateIfNotNull(clientUpdateDTO.password(), existingClient::setPassword);
-        clientMapper.updateIfNotNull(clientUpdateDTO.status(), existingClient::setStatus);
+        UpdateUtil.updateIfNotNull(clientUpdateDTO.name(), existingClient::setName);
+        UpdateUtil.updateIfNotNull(clientUpdateDTO.personGender(), existingClient::setGender);
+        UpdateUtil.updateIfNotNull(clientUpdateDTO.age(), existingClient::setAge);
+        UpdateUtil.updateIfNotNull(clientUpdateDTO.address(), existingClient::setAddress);
+        UpdateUtil.updateIfNotNull(clientUpdateDTO.phone(), existingClient::setPhone);
+        UpdateUtil.updateIfNotNull(clientUpdateDTO.password(), existingClient::setPassword);
+        UpdateUtil.updateIfNotNull(clientUpdateDTO.status(), existingClient::setStatus);
 
         Client updatedClient = clientRepository.save(existingClient);
 

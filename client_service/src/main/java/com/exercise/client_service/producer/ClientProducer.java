@@ -1,7 +1,7 @@
 package com.exercise.client_service.producer;
 
 import com.exercise.client_service.domain.Client;
-import com.exercise.client_service.service.utils.JsonUtils;
+import com.exercise.client_service.service.utils.JsonUtil;
 import com.exercise.client_service.producer.common.ClientProducerDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class ClientProducer {
         log.info("Sending message to Kafka Topic -> {}", TOPIC);
 
         ClientProducerDTO clientProducerDTO = new ClientProducerDTO(client.getClientId());
-        kafkaTemplate.send(TOPIC, JsonUtils.toJson(clientProducerDTO));
+        kafkaTemplate.send(TOPIC, JsonUtil.toJson(clientProducerDTO));
 
         log.info("Message Sent -> {}", clientProducerDTO);
     }

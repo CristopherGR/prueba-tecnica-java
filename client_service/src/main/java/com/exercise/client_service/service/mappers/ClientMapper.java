@@ -38,12 +38,5 @@ public class ClientMapper {
                 client.getStatus()
         );
     }
-
-    // Si el primer parametro recibio no es nulo, permite la ejecucion de la funcion recibida como segundo parametro
-    public <T> void updateIfNotNull(T sourceValue, Consumer<T> setter) {
-        if (sourceValue != null) {
-            setter.accept(sourceValue);
-        }
-    }
 }
 

@@ -4,9 +4,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component
-public class IdGeneratorService {
-    public String generateUniqueClientId() {
+public class IdGeneratorUtil {
+    public static String generateUniqueClientId() {
         return "CL-" + UUID.randomUUID().toString().replace("-", "").substring(0, 16);
     }
 }
