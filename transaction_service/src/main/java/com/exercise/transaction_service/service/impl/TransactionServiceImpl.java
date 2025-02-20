@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -34,6 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionMapper transactionMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Set<TransactionResponseDTO> getAllTransactions() {
         log.info("Entering TransactionServiceImpl.getAllTransactions()");
 
@@ -45,6 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TransactionResponseDTO getTransactionById(Long transactionId) {
         log.info("Entering TransactionServiceImpl.getTransactionById()");
         log.info("Transaction Id -> {} ", transactionId);
@@ -55,6 +58,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public TransactionResponseDTO createTransaction(TransactionCreateDTO transactionCreateDTO) {
         log.info("Entering TransactionServiceImpl.createTransaction()");
         log.info("TransactionRequestDTO -> {} ", transactionCreateDTO);
@@ -83,6 +87,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public TransactionResponseDTO updateTransaction(Long transactionId, TransactionUpdateDTO transactionUpdateDTO) {
         log.info("Entering TransactionServiceImpl.updateTransaction()");
         log.info("Transaction Id -> {} ", transactionId);
@@ -98,6 +103,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public void deleteTransactionById(Long transactionId) {
         log.info("Entering TransactionServiceImpl.deleteTransactionById()");
         log.info("Transaction Id -> {} ", transactionId);
@@ -107,6 +113,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Transaction getTransactionByIdOrThrows(Long transactionId) {
         log.info("Entering TransactionServiceImpl.getTransactionByIdOrThrows()");
         log.info("Transaction Id -> {} ", transactionId);
@@ -116,6 +123,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Transaction> getByAccountIdAndDateRange(Long accountId, LocalDateTime startDate, LocalDateTime endDate) {
         log.info("Entering TransactionServiceImpl.getByAccountIdAndDateRange()");
         log.info("Account Id -> {} ", accountId);

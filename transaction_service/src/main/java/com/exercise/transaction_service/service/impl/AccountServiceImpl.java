@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Set<AccountResponseDTO> getAllAccounts() {
         log.info("Entering AccountServiceImpl.getAllAccounts()");
 
@@ -39,6 +41,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AccountResponseDTO getAccountById(Long accountId) {
         log.info("Entering AccountServiceImpl.getAccountById()");
         log.info("Account Id -> {} ", accountId);
@@ -48,6 +51,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public AccountResponseDTO createAccount(AccountCreateDTO accountCreateDTO) {
         log.info("Entering AccountServiceImpl.createAccount()");
         log.info("AccountRequestDTO -> {} ", accountCreateDTO);
@@ -59,6 +63,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public AccountResponseDTO updateAccount(Long accountId, AccountUpdateDTO accountUpdateDTO) {
         log.info("Entering AccountServiceImpl.updateAccount()");
         log.info("Account Id -> {} ", accountId);
@@ -75,6 +80,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void deleteAccount(Long accountId) {
         log.info("Entering AccountServiceImpl.deleteAccount()");
         log.info("Account Id -> {} ", accountId);
@@ -84,6 +90,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Account getAccountByIdOrThrow(Long accountId) {
         log.info("Entering AccountServiceImpl.getAccountByIdOrThrow()");
         log.info("Account Id -> {} ", accountId);
@@ -93,6 +100,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AccountResponseDTO> getAccountsByClientId(String clientId) {
         log.info("Entering AccountServiceImpl.getAccountsByClientId()");
         log.info("Client Id -> {} ", clientId);

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,7 @@ public class ReportServiceImpl implements ReportService {
     private final TransactionService transactionService;
 
     @Override
+    @Transactional(readOnly = true)
     public ClientReportDTO getDetailedReport(String clientId, LocalDateTime startDate, LocalDateTime endDate) {
         log.info("Entering ReportServiceImpl.getDetailedReport()");
         log.info("Client Id -> {} ", clientId);
