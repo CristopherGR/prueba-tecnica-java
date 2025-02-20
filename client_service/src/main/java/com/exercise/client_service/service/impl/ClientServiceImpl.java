@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientMapper clientMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Set<ClientResponseDTO> getAllClients() {
         log.info("Entering ClientServiceImpl.getAllClients()");
 
@@ -42,6 +44,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ClientResponseDTO getByClientId(String clientId) {
         log.info("Entering ClientServiceImpl.getByClientId()");
         log.info("Client Id -> {}", clientId);
@@ -51,6 +54,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public ClientResponseDTO createClient(ClientCreateDTO clientCreateDTO) {
         log.info("Entering ClientServiceImpl.createClient()");
         log.info("ClientRequestDTO -> {}", clientCreateDTO);
@@ -67,6 +71,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public ClientResponseDTO updateClient(String clientId, ClientUpdateDTO clientUpdateDTO) {
         log.info("Entering ClientServiceImpl.updateClient()");
         log.info("Client Id -> {}", clientId);
@@ -88,6 +93,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public void deleteClient(String clientId) {
         log.info("Entering ClientServiceImpl.deleteClient()");
         log.info("Client Id -> {}", clientId);
@@ -97,6 +103,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Client getClientByIdOrThrows(String clientId) {
         log.info("Entering ClientServiceImpl.getClientByIdOrThrows()");
         log.info("Client Id -> {}", clientId);
